@@ -9,5 +9,12 @@
   "author": {
     "name": "XingGao",
     "email": "1032227283@qq.com"
+  },
+  "info": {
+    "companyName": "XingGao",
+    "productName": "UnlockVid Pro",
+    "productVersion": "1.1.0",
+    "copyright": "Copyright",
+    "comments": "一款简约的视频解锁工具"
   }
 }
