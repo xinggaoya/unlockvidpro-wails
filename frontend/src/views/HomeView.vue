@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { ElMessage, ElNotification } from 'element-plus'
+import {computed, onMounted, ref} from 'vue'
+import {ElMessage, ElNotification} from 'element-plus'
+import {DailyQuote} from '../../wailsjs/go/main/App'
+import {WindowFullscreen, WindowUnfullscreen} from "../../wailsjs/runtime";
 
 const playLine = [
-  { 'name': '2S0', 'url': 'https://jx.2s0.cn/player/?url=' },
-  { 'name': '2ys', 'url': 'https://gj.fenxiangb.com/player/analysis.php?v=' },
-  { 'name': '虾米', 'url': 'https://jx.xmflv.com/?url=' },
+  {'name': '2S0', 'url': 'https://jx.2s0.cn/player/?url='},
+  {'name': '2ys', 'url': 'https://gj.fenxiangb.com/player/analysis.php?v='},
+  {"name": "B站1", "url": "https://jx.jsonplayer.com/player/?url="},
+  {'name': '虾米', 'url': 'https://jx.xmflv.com/?url='},
 ]
 
 const iframeUrl = computed(() => {
@@ -25,7 +28,6 @@ function handelChange(v: any) {
   vipAddress.value = v.url
   localStorage.setItem('vipAddress', JSON.stringify(v))
   ElMessage.success('切换成功,请稍等片刻...')
-
   loading()
 }
 
@@ -35,6 +37,17 @@ function loading() {
   setTimeout(() => {
     iframeLoading.value = false
   }, 1000)
+}
+
+// 全屏
+function fullScreenHandel() {
+  document.addEventListener("fullscreenchange", () => {
+    if (document.fullscreenElement) {
+      WindowFullscreen();
+    } else {
+      WindowUnfullscreen();
+    }
+  });
 }
 
 onMounted(() => {
@@ -49,11 +62,18 @@ onMounted(() => {
     vipAddress.value = data.url
     radioValue.value = data.name
   }
-
+  fullScreenHandel()
   ElNotification({
     title: '提示',
     message: '部分接口存在恶意广告；仅供测试！！',
     type: 'warning'
+  })
+  DailyQuote().then((res) => {
+    ElNotification({
+      title: '每日一句',
+      message: res.content,
+      type: 'info'
+    })
   })
 })
 </script>
@@ -63,7 +83,7 @@ onMounted(() => {
     <el-container>
       <el-header class="main-header">
         <div>
-          <el-image src="/logo.ico" style="width: 40px;margin: 0 10px" />
+          <el-image src="/logo.ico" style="width: 40px;margin: 0 10px"/>
         </div>
         <div class="main-center">
           <h1 style="display: inline-block">UnlockVid Pro</h1>
@@ -72,13 +92,13 @@ onMounted(() => {
       <el-main>
         <div v-loading="iframeLoading">
           <iframe
-            id="playLine"
-            :src="iframeUrl"
-            width="100%"
-            title="YouTube video player"
-            allowfullscreen
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              id="playLine"
+              :src="iframeUrl"
+              width="100%"
+              title="YouTube video player"
+              allowfullscreen
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           ></iframe>
         </div>
         <div>
@@ -87,17 +107,17 @@ onMounted(() => {
               <el-form-item label="播放线路">
                 <el-radio-group v-model="radioValue">
                   <el-radio
-                    :label="item.name"
-                    v-for="(item,index) in playLine"
-                    @change="handelChange(item)"
-                    :key="index"
-                    border
+                      :label="item.name"
+                      v-for="(item,index) in playLine"
+                      @change="handelChange(item)"
+                      :key="index"
+                      border
                   />
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="视频链接">
                 <el-input type="textarea" v-model="videoAddress" rows="4" @input="inputHande"
-                          placeholder="请输入视频原链接" />
+                          placeholder="请输入视频原链接"/>
               </el-form-item>
             </el-form>
           </div>
