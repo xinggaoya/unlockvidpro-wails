@@ -1,9 +1,10 @@
-package main
+package internal
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/wailsapp/wails/v2/pkg/templates"
 	"io"
 	"net/http"
 )
@@ -18,15 +19,17 @@ func NewApp() *App {
 	return &App{}
 }
 
-// startup is called when the app starts. The context is saved
+// Startup is called when the app starts. The context is saved
 // so we can call the runtime methods
-func (a *App) startup(ctx context.Context) {
+func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+// GetAppVersion returns a greeting for the given name
+func (a *App) GetAppVersion() string {
+	// 获取 wails.json 版本号
+	version, err := templates.List()
+	return fmt.Sprintf("Hello %s, It's show time!")
 }
 
 // DailyQuote returns a daily quote

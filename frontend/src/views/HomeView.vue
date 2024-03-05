@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue'
 import {ElMessage, ElNotification} from 'element-plus'
-import {DailyQuote} from '../../wailsjs/go/main/App'
+import {DailyQuote} from '../../wailsjs/go/internal/App'
 import {WindowFullscreen, WindowUnfullscreen} from "../../wailsjs/runtime";
 
 const playLine = [
@@ -81,14 +81,6 @@ onMounted(() => {
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header class="main-header">
-        <div>
-          <el-image src="/logo.ico" style="width: 40px;margin: 0 10px"/>
-        </div>
-        <div class="main-center">
-          <h1 style="display: inline-block">UnlockVid Pro</h1>
-        </div>
-      </el-header>
       <el-main>
         <div v-loading="iframeLoading">
           <iframe
@@ -121,17 +113,17 @@ onMounted(() => {
               </el-form-item>
             </el-form>
           </div>
-          <div class="main-center">
-            <el-space>
-              <el-link type="info" href="https://www.iqiyi.com">爱奇艺</el-link>
-              <el-link type="info" href="https://v.qq.com">腾讯视频</el-link>
-              <el-link type="info" href="https://www.youku.com">优酷</el-link>
-            </el-space>
-          </div>
         </div>
       </el-main>
       <el-footer class="main-center">
-        <el-text tag="mark">请注意部分接口存在恶意广告，请斟酌使用；仅供测试</el-text>
+        <el-space>
+          <el-link type="info" href="https://www.iqiyi.com">爱奇艺</el-link>
+          <el-link type="info" href="https://v.qq.com">腾讯视频</el-link>
+          <el-link type="info" href="https://www.youku.com">优酷</el-link>
+        </el-space>
+        <div>
+          <el-text tag="mark">请注意部分接口存在恶意广告，请斟酌使用；仅供测试</el-text>
+        </div>
       </el-footer>
     </el-container>
   </div>
